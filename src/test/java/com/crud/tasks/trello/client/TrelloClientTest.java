@@ -64,7 +64,7 @@ public class TrelloClientTest {
     public void shouldCreateCard() throws URISyntaxException {
         //Given
         TrelloCardDto trelloCardDto = new TrelloCardDto(
-                "Test Task",
+                "Test task",
                 "Test Description",
                 "top",
                 "test_id"
@@ -77,6 +77,9 @@ public class TrelloClientTest {
                 "Test task",
                 "http://test.com"
         );
+
+        when(restTemplate.postForObject(uri, null, CreatedTrelloCard.class)).thenReturn(createdTrelloCard);
+
         //When
         CreatedTrelloCard newCard = trelloClient.createNewCard(trelloCardDto);
 
