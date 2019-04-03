@@ -14,8 +14,10 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 @RequestMapping("/v1/task")
 @CrossOrigin(origins = "*")
 public class TaskController {
+
     @Autowired
     private DbService service;
+
     @Autowired
     private TaskMapper taskMapper;
 
