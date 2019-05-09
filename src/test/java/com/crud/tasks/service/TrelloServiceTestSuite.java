@@ -14,6 +14,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -67,7 +68,6 @@ public class TrelloServiceTestSuite {
     public void testCreateTrelloCard() {
         //Given
         TrelloCardDto cardDto = new TrelloCardDto("card", "description", "top", "114");
-        TrelloCard card = new TrelloCard("card", "description", "top", "114");
         CreatedTrelloCardDto createdTrelloCardDto = new CreatedTrelloCardDto("53", "name", "shortUrl");
 
         when(trelloClient.createNewCard(cardDto)).thenReturn(createdTrelloCardDto);
@@ -79,6 +79,6 @@ public class TrelloServiceTestSuite {
         assertEquals("53",createdTrelloCardDtoFromService.getId());
         assertEquals("name",createdTrelloCardDtoFromService.getName());
         assertEquals("shortUrl",createdTrelloCardDtoFromService.getShortUrl());
-        verify(emailService, times(1)).send(any());
+        verify(emailService, times(1)).send(any(),eq(false));
     }
 }

@@ -1,5 +1,6 @@
 package com.crud.tasks.service;
 
+import com.crud.tasks.controller.TaskNotFoundException;
 import com.crud.tasks.domain.Task;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,7 +37,7 @@ public class DbServiceTestSuite {
 
     @Test
     @Transactional
-    public void testGetTask() {
+    public void testGetTask() throws TaskNotFoundException {
         //Given
         Task task1 = new Task("Test task 1", "Test task content 1");
         Task task2 = new Task("Test task 2", "Test task content 2");
@@ -44,8 +45,8 @@ public class DbServiceTestSuite {
         dbService.saveTask(task2);
 
         //When
-        Task foundTask1 = dbService.getTask(task1.getId()).get();
-        Task foundTask2 = dbService.getTask(task2.getId()).get();
+        Task foundTask1 = dbService.getTask(task1.getId());
+        Task foundTask2 = dbService.getTask(task2.getId());
 
         //Then
         assertEquals("Test task 1", foundTask1.getTitle());
