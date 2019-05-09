@@ -22,35 +22,28 @@ public class SimpleEmailService {
     @Autowired
     private MailCreatorService mailCreatorService;
 
-    public void send(Mail mail) {
+    public void send(Mail mail, boolean isCountingMail) {
 
         LOGGER.info("Preparing mail to send");
 
         try{
-            javaMailSender.send(createMimeMessage(mail));
+            javaMailSender.send(createMimeMessage(mail,isCountingMail));
             LOGGER.info("Mail sent properly");
         } catch (MailException e) {
             LOGGER.error("Failed to send mail: ", e.getMessage(), e);
         }
     }
 
-    private MimeMessagePreparator createMimeMessage(final Mail mail) {
+    private MimeMessagePreparator createMimeMessage(final Mail mail, final boolean isCountingMail) {
         return mimeMessage -> {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getMailTo());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            if (isCountingMail) {
+                messageHelper.setText(mailCreatorService.buildCountingTasksEmail(mail.getMessage()), true);
+            } else {
+                messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            }
         };
-    }
-
-    private SimpleMailMessage createMailMessage(Mail mail) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(mail.getMailTo());
-        mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mail.getMessage());
-        if (mail.getToCc() != null && mail.getToCc() != "") {
-            mailMessage.setCc(mail.getToCc());
-        }
-        return mailMessage;
     }
 }
