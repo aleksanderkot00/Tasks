@@ -13,4 +13,27 @@ public class AdminConfig {
 
     @Value("${admin.name}")
     private String adminName;
+
+    @Value("${company.name}")
+    private String companyName;
+
+    @Value("${company.phone}")
+    private String companyPhone;
+
+    @Value("${company.address.city}")
+    private String companyCity;
+
+    @Value("${company.address.street}")
+    private String companyStreet;
+
+    @Value("${company.address.country}")
+    private String companyCountry;
+
+    public String getCompanyDetails() {
+        return companyName + ", " +
+                companyStreet + ", " +
+                companyCity + ", " +
+                companyCountry + ", " +
+                "tel: " + companyPhone;
+    }
 }
